@@ -106,7 +106,6 @@ public class ViewHolder
 	 * 为ImageView设置图片
 	 * 
 	 * @param viewId
-	 * @param drawableId
 	 * @return
 	 */
 	public ViewHolder setImageBitmap(int viewId, Bitmap bm)

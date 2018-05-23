@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jz.image_selector.R;
 import com.jz.image_selector.bean.Folder;
+import com.jz.image_selector.utils.ScreenUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,23 +22,21 @@ import java.util.List;
  */
 public class FolderAdapter extends BaseAdapter {
 
-    int mImageSize;
-    private static int lastSelected ;
+    private int mImageSize;
+    private static int lastSelected = 0;
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<Folder> mFolders = new ArrayList<>();
+    private List<Folder> mFolders;
 
-    public FolderAdapter(Context context) {
-        mContext = context;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mImageSize = mContext.getResources().getDimensionPixelOffset(R.dimen.folder_cover_size);
-    }
-    
     public FolderAdapter(Context context, List<Folder> mDatas) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mImageSize = mContext.getResources().getDimensionPixelOffset(R.dimen.folder_cover_size);
-        this.mFolders=mDatas;
+        mImageSize = ScreenUtils.getImageItemWidth(context);
+        if (mDatas != null && mDatas.size() > 0) {
+            mFolders = mDatas;
+        } else {
+            mFolders = new ArrayList<>();
+        }
     }
 
     /**
@@ -56,22 +55,21 @@ public class FolderAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mFolders.size() + 1;
+        return mFolders.size();
     }
 
     @Override
-    public Folder getItem(int i) {
-        if (i == 0) return null;
-        return mFolders.get(i - 1);
+    public Folder getItem(int position) {
+        return mFolders.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View view, ViewGroup viewGroup) {
         ViewHolder holder;
         if (view == null) {
             view = mInflater.inflate(R.layout.list_item_folder, viewGroup, false);
@@ -79,41 +77,26 @@ public class FolderAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        if (holder != null) {
-            if (i == 0) {
-                holder.name.setText("所有图片");
-                holder.size.setText(getTotalImageSize() + "张");
-                if (mFolders.size() > 0) {
-                    Folder f = mFolders.get(0);
 
-                    //显示图片
-                    Glide.with(mContext)
-                            .load(new File(f.cover.path))
-                            .error(R.drawable.default_error)
-                            .override(mImageSize, mImageSize)
-                            .centerCrop()
-                            .into(holder.cover);
-                }
-            } else {
-                holder.bindData(getItem(i));
-            }
-            if (lastSelected == i) {
-                holder.indicator.setVisibility(View.VISIBLE);
-            } else {
-                holder.indicator.setVisibility(View.INVISIBLE);
-            }
+
+        Folder folder = getItem(position);
+        holder.name.setText(folder.name);
+        holder.size.setText(folder.images.size() + "张");
+        // 显示图片
+        Glide.with(mContext)
+                .load(new File(folder.cover.path))
+                .placeholder(R.drawable.default_error)
+                .override(mImageSize, mImageSize)
+                .centerCrop()
+                .into(holder.cover);
+
+        if (lastSelected == position) {
+            holder.indicator.setVisibility(View.VISIBLE);
+        } else {
+            holder.indicator.setVisibility(View.INVISIBLE);
         }
+
         return view;
-    }
-
-    private int getTotalImageSize() {
-        int result = 0;
-        if (mFolders != null && mFolders.size() > 0) {
-            for (Folder f : mFolders) {
-                result += f.images.size();
-            }
-        }
-        return result;
     }
 
     public int getSelectIndex() {
@@ -139,18 +122,6 @@ public class FolderAdapter extends BaseAdapter {
             size = (TextView) view.findViewById(R.id.size);
             indicator = (ImageView) view.findViewById(R.id.indicator);
             view.setTag(this);
-        }
-
-        void bindData(Folder data) {
-            name.setText(data.name);
-            size.setText(data.images.size() + "张");
-            // 显示图片
-            Glide.with(mContext)
-                    .load(new File(data.cover.path))
-                    .placeholder(R.drawable.default_error)
-                    .override(mImageSize, mImageSize)
-                    .centerCrop()
-                    .into(cover);
         }
     }
 

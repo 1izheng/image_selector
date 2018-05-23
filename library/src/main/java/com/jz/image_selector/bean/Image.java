@@ -2,7 +2,6 @@ package com.jz.image_selector.bean;
 
 /**
  * 图片实体
- * Created by Nereo on 2015/4/7.
  */
 public class Image {
     public String path;

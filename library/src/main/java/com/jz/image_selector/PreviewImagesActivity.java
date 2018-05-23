@@ -16,7 +16,10 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 import java.util.ArrayList;
 
-public class PreviewPicturesActivity extends Activity {
+/**
+ * 图片预览
+ */
+public class PreviewImagesActivity extends Activity {
     ViewPager pager;
     MyPagerAdapter adapter;
     private ArrayList<String> picList = new ArrayList<>();
@@ -24,7 +27,7 @@ public class PreviewPicturesActivity extends Activity {
 
 
     public static void preViewSingle(Activity activity, String url, int requestCode) {
-        Intent intent = new Intent(activity, PreviewPicturesActivity.class);
+        Intent intent = new Intent(activity, PreviewImagesActivity.class);
         ArrayList<String> pic = new ArrayList<>();
         pic.add(url);
         intent.putExtra("pics", pic);
@@ -80,10 +83,10 @@ public class PreviewPicturesActivity extends Activity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = View.inflate(PreviewPicturesActivity.this, R.layout.item_image, null);
+            View view = View.inflate(PreviewImagesActivity.this, R.layout.preview_item_image, null);
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_pic);
 
-            Glide.with(PreviewPicturesActivity.this).load(new File(picList.get(position)))
+            Glide.with(PreviewImagesActivity.this).load(new File(picList.get(position)))
 //                    .placeholder(R.drawable.default_error)
                     .override(800, 1500)
                             //.error(R.drawable.default_error)

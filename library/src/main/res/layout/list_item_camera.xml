@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:drawablePadding="10dp"
-        android:drawableTop="@drawable/asy"
+        android:drawableTop="@drawable/icon_camera"
         android:gravity="center_horizontal"
         android:text="拍摄照片"
         android:textColor="#CDCECE"

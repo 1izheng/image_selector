@@ -3,8 +3,7 @@ package com.jz.image_selector.bean;
 import java.util.List;
 
 /**
- * 文件夹
- * Created by Nereo on 2015/4/7.
+ * 文件夹实体
  */
 public class Folder {
     public String name;

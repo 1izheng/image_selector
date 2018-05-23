@@ -3,7 +3,29 @@
     >
 
     <application android:allowBackup="true">
-        <activity android:name=".PreviewPicturesActivity"/>
-        <activity android:name=".MultiImageSelectorActivity"/>
+        <activity
+            android:name=".PreviewImagesActivity"
+            android:configChanges="orientation|screenSize"
+            />
+        <activity
+            android:name=".ImageSelectorActivity"
+            android:configChanges="orientation|screenSize"
+            />
+        <activity
+            android:name=".ImageCropActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
+            />
+
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name=".utils.ImageProvider"
+            android:grantUriPermissions="true"
+            android:exported="false"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

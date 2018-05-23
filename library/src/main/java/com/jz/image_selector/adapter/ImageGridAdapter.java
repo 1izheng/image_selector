@@ -11,14 +11,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.jz.image_selector.R;
 import com.jz.image_selector.bean.Image;
+import com.jz.image_selector.utils.ScreenUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 图片Adapter
- * Created by Nereo on 2015/4/7.
+ * 图片GridView Adapter
  */
 public class ImageGridAdapter extends BaseAdapter {
 
@@ -41,7 +41,8 @@ public class ImageGridAdapter extends BaseAdapter {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showCamera = showCamera;
-        mItemLayoutParams = new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, GridView.LayoutParams.MATCH_PARENT);
+        mItemSize = ScreenUtils.getImageItemWidth(context);
+        mItemLayoutParams = new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, mItemSize);
     }
 
     /**
@@ -106,6 +107,7 @@ public class ImageGridAdapter extends BaseAdapter {
         return null;
     }
 
+
     /**
      * 设置数据集
      *
@@ -122,23 +124,6 @@ public class ImageGridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * 重置每个Column的Size
-     *
-     * @param columnWidth
-     */
-    public void setItemSize(int columnWidth) {
-
-        if (mItemSize == columnWidth) {
-            return;
-        }
-
-        mItemSize = columnWidth;
-
-        mItemLayoutParams = new GridView.LayoutParams(mItemSize, mItemSize);
-
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getViewTypeCount() {
@@ -159,26 +144,26 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public Image getItem(int i) {
+    public Image getItem(int position) {
         if (showCamera) {
-            if (i == 0) {
+            if (position == 0) {
                 return null;
             }
-            return mImages.get(i - 1);
+            return mImages.get(position - 1);
         } else {
-            return mImages.get(i);
+            return mImages.get(position);
         }
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View view, ViewGroup viewGroup) {
 
-        int type = getItemViewType(i);
+        int type = getItemViewType(position);
         if (type == TYPE_CAMERA) {
             view = mInflater.inflate(R.layout.list_item_camera, viewGroup, false);
             view.setTag(null);
@@ -187,6 +172,7 @@ public class ImageGridAdapter extends BaseAdapter {
             if (view == null) {
                 view = mInflater.inflate(R.layout.list_item_image, viewGroup, false);
                 holde = new ViewHolde(view);
+                view.setTag(holde);
             } else {
                 holde = (ViewHolde) view.getTag();
                 if (holde == null) {
@@ -195,7 +181,7 @@ public class ImageGridAdapter extends BaseAdapter {
                 }
             }
             if (holde != null) {
-                holde.bindData(getItem(i));
+                holde.bindData(getItem(position));
             }
         }
 
@@ -217,6 +203,7 @@ public class ImageGridAdapter extends BaseAdapter {
             image = (ImageView) view.findViewById(R.id.image);
             indicator = (ImageView) view.findViewById(R.id.checkmark);
             mask = view.findViewById(R.id.mask);
+            view.setLayoutParams(mItemLayoutParams);
             view.setTag(this);
         }
 
@@ -244,7 +231,7 @@ public class ImageGridAdapter extends BaseAdapter {
                 Glide.with(mContext)
                         .load(imageFile)
                         .placeholder(R.drawable.default_error)
-                                //.error(R.drawable.default_error)
+                        //.error(R.drawable.default_error)
                         .override(mItemSize, mItemSize)
                         .centerCrop()
                         .into(image);

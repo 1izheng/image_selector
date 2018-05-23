@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
     }
 
     buildTypes {
@@ -18,6 +18,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
 }
@@ -31,10 +35,10 @@ dependencies {
 }
 
 publish {
-    userOrg = 'mangoz'//bintray.com用户名
-    groupId = 'com.l1zheng'//jcenter上的路径
+    userOrg = 'lizheng'//bintray.com用户名
+    groupId = 'com.mangoz'//jcenter上的路径
     artifactId = 'image_selector'//项目名称
-    publishVersion = '1.0'//版本号
+    publishVersion = '1.0.1'//版本号
     desc = 'mmmmm'//描述，不重要
-    website = 'https://github.com/l1zheng/image_selector'
+    website = 'https://github.com/lizheng/image_selector'
 }
