@@ -67,6 +67,7 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
      * 默认选择的数据集
      */
     public static final String EXTRA_DEFAULT_SELECTED_LIST = "default_result";
+
     /**
      * 单选
      */
@@ -83,6 +84,10 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
     private int mustCount;
 
     private int mDefaultCount;  //最大选择数量
+
+    //是否直接拍照
+    public static final String DEFAULT_START_CAMERA = "default_start_camera";
+    private boolean defaultStartCamera = false; //是否直接拍照
 
     // 请求加载系统照相机
     private static final int REQUEST_CAMERA = 100; //拍照返回
@@ -118,25 +123,29 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
 
     private int currentMode;
 
+    /*开始选取照片，
+    onActivityResult方法中返回ArrayList<String> resultList:
+    if(requestCode ==REQUEST_IMAGE)
+    {
+      if (resultCode == RESULT_OK) {
+         resultList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+      }
+    }*/
+
     /**
-     * 开始选取照片，并在onActivityResult方法中返回ArrayList<String> resultList:
-     * if(requestCode == REQUEST_IMAGE){
-     * if(resultCode == RESULT_OK){
-     * resultList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-     * }
-     * }
-     *
      * @param activity     activity
      * @param requestCode  requestCode
      * @param maxNum       最多选择图片数
      * @param selectedMode ImageSelectorActivity.MODE_SINGLE , ImageSelectorActivity.MODE_MULTI
      */
-    public static void startSelect(Activity activity, int requestCode, int maxNum, int selectedMode, ArrayList<String> resultList) {
+    public static void startSelect(Activity activity, int requestCode, int maxNum, int selectedMode, boolean defaultStartCamera, ArrayList<String> resultList) {
         Intent intent = new Intent(activity, ImageSelectorActivity.class);
         // 最大可选择图片数量
         intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_COUNT, maxNum);
         // 选择模式
         intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_MODE, selectedMode);
+        //是否直接开始拍照
+        intent.putExtra(DEFAULT_START_CAMERA, defaultStartCamera);
         //已经选择的图片
         intent.putStringArrayListExtra(ImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, resultList);
         activity.startActivityForResult(intent, requestCode);
@@ -145,7 +154,7 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_image_selector_z);
         initIntent();
         initView();
         initData();
@@ -159,6 +168,17 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         mIsShowCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA, true);//默认显示照相机
         if (currentMode == MODE_MULTI && intent.hasExtra(EXTRA_DEFAULT_SELECTED_LIST)) {
             resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
+        }
+
+        //直接拍照
+        defaultStartCamera = intent.getBooleanExtra(DEFAULT_START_CAMERA, false);
+        if (defaultStartCamera) {
+            if (!(checkPermission(Manifest.permission.CAMERA))) {
+                ActivityCompat.requestPermissions(ImageSelectorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE);
+            } else {
+                showCameraAction();
+            }
+
         }
     }
 
