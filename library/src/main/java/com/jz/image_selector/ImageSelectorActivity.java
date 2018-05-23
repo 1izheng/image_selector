@@ -368,7 +368,6 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
 
         //裁剪完成
         if (requestCode == REQUEST_CROP && resultCode == RESULT_OK) {
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(camearFile)));// 刷新系统相册
             String path = data.getStringExtra(EXTRA_RESULT);
             Intent intent = new Intent();
             resultList.add(path);
