@@ -158,6 +158,16 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         initIntent();
         initView();
         initData();
+
+        //直接拍照
+        defaultStartCamera = getIntent().getBooleanExtra(DEFAULT_START_CAMERA, false);
+        if (defaultStartCamera) {
+            if (!checkPermission(Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CAMERA);
+            } else {
+                showCameraAction();
+            }
+        }
     }
 
     private void initIntent() {
@@ -169,22 +179,11 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         if (currentMode == MODE_MULTI && intent.hasExtra(EXTRA_DEFAULT_SELECTED_LIST)) {
             resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
         }
-
-        //直接拍照
-        defaultStartCamera = intent.getBooleanExtra(DEFAULT_START_CAMERA, false);
-        if (defaultStartCamera) {
-            if (!(checkPermission(Manifest.permission.CAMERA))) {
-                ActivityCompat.requestPermissions(ImageSelectorActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE);
-            } else {
-                showCameraAction();
-            }
-
-        }
     }
 
     private void initData() {
         // 首次加载所有图片
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 new ImageDataSource(ImageSelectorActivity.this, this);
             } else {
@@ -531,7 +530,11 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         if (mImageAdapter.isShowCamera()) {
             // 如果显示照相机，则第一个Grid显示为照相机，处理特殊逻辑
             if (position == 0) {
-                showCameraAction();
+                if (!checkPermission(Manifest.permission.CAMERA)) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_PERMISSION_CAMERA);
+                } else {
+                    showCameraAction();
+                }
             } else {
                 // 正常操作
                 Image image = (Image) parent.getAdapter().getItem(position);
