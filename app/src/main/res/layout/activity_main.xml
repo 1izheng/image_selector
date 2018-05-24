@@ -14,11 +14,26 @@
         android:layout_height="80dp"
         android:text="+"
         android:textSize="40dp"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222"
+        />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="+"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222"
         />
 
 </android.support.constraint.ConstraintLayout>

@@ -156,9 +156,6 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_selector_z);
         initIntent();
-        initView();
-        initData();
-
         //直接拍照
         defaultStartCamera = getIntent().getBooleanExtra(DEFAULT_START_CAMERA, false);
         if (defaultStartCamera) {
@@ -168,6 +165,8 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
                 showCameraAction();
             }
         }
+        initView();
+        initData();
     }
 
     private void initIntent() {

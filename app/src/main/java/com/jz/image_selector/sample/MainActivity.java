@@ -21,16 +21,24 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*ImageSelectorActivity.startSelect(MainActivity.this, 1, 2
-                        , ImageSelectorActivity.MODE_SINGLE, new ArrayList<String>());*/
 
                 ImageSelectorActivity.startSelect(MainActivity.this, 1, 2
-                        , ImageSelectorActivity.MODE_SINGLE,  true, new ArrayList<String>());
+                        , ImageSelectorActivity.MODE_SINGLE, true, new ArrayList<String>());
 
 
             }
         });
 
+        findViewById(R.id.tv2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ImageSelectorActivity.startSelect(MainActivity.this, 1, 2
+                        , ImageSelectorActivity.MODE_SINGLE, false, new ArrayList<String>());
+
+
+            }
+        });
 
 
     }
@@ -44,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             if (data != null && requestCode == 1) {
                 final List<String> images = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
                 final String path = images.get(0);
-                Toast.makeText(this, "path:"+path, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "path:" + path, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
