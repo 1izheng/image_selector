@@ -363,6 +363,9 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
                 if (camearFile != null && camearFile.exists()) {
                     camearFile.delete();
                 }
+                if (defaultStartCamera) {
+                    finish();
+                }
             }
         }
 
