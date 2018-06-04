@@ -69,6 +69,11 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
     public static final String EXTRA_DEFAULT_SELECTED_LIST = "default_result";
 
     /**
+     * 是否裁剪
+     */
+    public static final String EXTRA_DEFAULT_CROP = "isCrop";
+
+    /**
      * 单选
      */
     public static final int MODE_SINGLE = 0;
@@ -123,14 +128,35 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
 
     private int currentMode;
 
-    /*开始选取照片，
-    onActivityResult方法中返回ArrayList<String> resultList:
-    if(requestCode ==REQUEST_IMAGE)
-    {
-      if (resultCode == RESULT_OK) {
-         resultList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-      }
-    }*/
+
+    /**
+     *
+     * @param activity
+     * @param requestCode
+     * @param maxNum
+     * @param selectedMode
+     * @param defaultStartCamera
+     * @param isCrop
+     * @param showCamera
+     * @param resultList
+     */
+    public static void startSelect(Activity activity, int requestCode, int maxNum, int selectedMode, boolean defaultStartCamera, boolean isCrop, boolean showCamera, ArrayList<String> resultList) {
+        Intent intent = new Intent(activity, ImageSelectorActivity.class);
+        // 最大可选择图片数量
+        intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_COUNT, maxNum);
+        // 选择模式
+        intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_MODE, selectedMode);
+        //是否直接开始拍照
+        intent.putExtra(DEFAULT_START_CAMERA, defaultStartCamera);
+        //是否裁剪
+        intent.putExtra(EXTRA_DEFAULT_CROP, isCrop);
+        //是否显示相机
+        intent.putExtra(EXTRA_SHOW_CAMERA, showCamera);
+        //已经选择的图片
+        intent.putStringArrayListExtra(ImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, resultList);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
 
     /**
      * @param activity     activity
