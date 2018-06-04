@@ -130,7 +130,6 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
 
 
     /**
-     *
      * @param activity
      * @param requestCode
      * @param maxNum
@@ -201,6 +200,7 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         mustCount = intent.getIntExtra(MUST_COUNT, 0);
         currentMode = intent.getIntExtra(EXTRA_SELECT_MODE, MODE_MULTI);
         mIsShowCamera = intent.getBooleanExtra(EXTRA_SHOW_CAMERA, true);//默认显示照相机
+        isCrop = intent.getBooleanExtra(EXTRA_DEFAULT_CROP, true); //默认裁剪
         if (currentMode == MODE_MULTI && intent.hasExtra(EXTRA_DEFAULT_SELECTED_LIST)) {
             resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
         }
