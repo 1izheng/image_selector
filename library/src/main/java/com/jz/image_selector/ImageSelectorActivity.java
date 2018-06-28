@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -128,6 +129,34 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
 
     private int currentMode;
 
+
+    /**
+     * @param fragment
+     * @param requestCode
+     * @param maxNum
+     * @param selectedMode
+     * @param defaultStartCamera
+     * @param isCrop
+     * @param showCamera
+     * @param resultList
+     */
+    public static void startSelect(Fragment fragment, int requestCode, int maxNum, int selectedMode, boolean defaultStartCamera, boolean isCrop, boolean showCamera, ArrayList<String> resultList) {
+        Intent intent = new Intent(fragment.getActivity(), ImageSelectorActivity.class);
+        // 最大可选择图片数量
+        intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_COUNT, maxNum);
+        // 选择模式
+        intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_MODE, selectedMode);
+        //是否直接开始拍照
+        intent.putExtra(DEFAULT_START_CAMERA, defaultStartCamera);
+        //是否裁剪
+        intent.putExtra(EXTRA_DEFAULT_CROP, isCrop);
+        //是否显示相机
+        intent.putExtra(EXTRA_SHOW_CAMERA, showCamera);
+        //已经选择的图片
+        intent.putStringArrayListExtra(ImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, resultList);
+
+        fragment.startActivityForResult(intent, requestCode);
+    }
 
     /**
      * @param activity
