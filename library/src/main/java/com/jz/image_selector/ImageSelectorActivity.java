@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -111,7 +110,6 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
     // 确定
     private Button mSubmitButton;
 
-
     // 结果数据
     private ArrayList<String> resultList = new ArrayList<>();
 
@@ -128,35 +126,6 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
     private File camearFile; //拍照保存的临时文件
 
     private int currentMode;
-
-
-    /**
-     * @param fragment
-     * @param requestCode
-     * @param maxNum
-     * @param selectedMode
-     * @param defaultStartCamera
-     * @param isCrop
-     * @param showCamera
-     * @param resultList
-     */
-    public static void startSelect(Fragment fragment, int requestCode, int maxNum, int selectedMode, boolean defaultStartCamera, boolean isCrop, boolean showCamera, ArrayList<String> resultList) {
-        Intent intent = new Intent(fragment.getActivity(), ImageSelectorActivity.class);
-        // 最大可选择图片数量
-        intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_COUNT, maxNum);
-        // 选择模式
-        intent.putExtra(ImageSelectorActivity.EXTRA_SELECT_MODE, selectedMode);
-        //是否直接开始拍照
-        intent.putExtra(DEFAULT_START_CAMERA, defaultStartCamera);
-        //是否裁剪
-        intent.putExtra(EXTRA_DEFAULT_CROP, isCrop);
-        //是否显示相机
-        intent.putExtra(EXTRA_SHOW_CAMERA, showCamera);
-        //已经选择的图片
-        intent.putStringArrayListExtra(ImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST, resultList);
-
-        fragment.startActivityForResult(intent, requestCode);
-    }
 
     /**
      * @param activity
@@ -275,7 +244,7 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         // 返回按钮
         findViewById(R.id.btn_back).setOnClickListener(this);
         // 完成按钮
-        mSubmitButton = (Button) findViewById(R.id.commit);
+        mSubmitButton = (Button) findViewById(R.id.btn_commit);
         if (resultList == null || resultList.size() <= 0) {
             mSubmitButton.setText("完成");
             mSubmitButton.setEnabled(false);
@@ -539,7 +508,7 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         if (id == R.id.btn_back) { //返回
             setResult(RESULT_CANCELED);
             finish();
-        } else if (id == R.id.commit) { //确定
+        } else if (id == R.id.btn_commit) { //确定
             if (resultList != null && resultList.size() > 0) {
                 // 返回已选择的图片数据
                 finishSelect();

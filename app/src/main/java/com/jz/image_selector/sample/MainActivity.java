@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 ImageSelectorActivity.startSelect(MainActivity.this, 1, 2
-                        , ImageSelectorActivity.MODE_SINGLE, false, new ArrayList<String>());
+                        , ImageSelectorActivity.MODE_MULTI, false, new ArrayList<String>());
 
 
             }

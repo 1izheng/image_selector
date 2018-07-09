@@ -33,7 +33,7 @@ public class ImageCropActivity extends FragmentActivity implements View.OnClickL
 
         //初始化View
         findViewById(R.id.btn_back).setOnClickListener(this);
-        Button btnCommit = (Button) findViewById(R.id.commit);
+        Button btnCommit = (Button) findViewById(R.id.btn_commit);
         btnCommit.setOnClickListener(this);
         mCropImageView = (CropImageView) findViewById(R.id.cv_crop_image);
         mCropImageView.setOnBitmapSaveCompleteListener(this);
@@ -80,7 +80,7 @@ public class ImageCropActivity extends FragmentActivity implements View.OnClickL
         if (id == R.id.btn_back) {
             setResult(RESULT_CANCELED);
             finish();
-        } else if (id == R.id.commit) {
+        } else if (id == R.id.btn_commit) {
             mCropImageView.saveBitmapToFile(FileUtils.getCropCacheFile(this), mOutputX, mOutputY, mIsSaveRectangle);
         }
     }
