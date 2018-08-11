@@ -17,7 +17,20 @@ public class ScreenUtils {
         int cols = screenWidth / densityDpi;
         cols = cols < 4 ? 4 : cols;
         int columnSpace = (int) (2 * activity.getResources().getDisplayMetrics().density);
-        return (screenWidth - columnSpace * (cols - 1)) / cols;
+        int size = (screenWidth - (cols - 1) * columnSpace) / cols;
+        return size;
+    }
+
+
+    /**
+     * 根据屏幕宽度与密度计算GridView显示的列数， 最少为4列，并获取Item宽度
+     */
+    public static int getColumn(Context activity) {
+        int screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
+        int densityDpi = activity.getResources().getDisplayMetrics().densityDpi;
+        int cols = screenWidth / densityDpi;
+        cols = cols < 4 ? 4 : cols;
+        return cols;
     }
 
     /**

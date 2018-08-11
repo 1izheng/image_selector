@@ -38,15 +38,19 @@ public class ImageCropActivity extends FragmentActivity implements View.OnClickL
         mCropImageView = (CropImageView) findViewById(R.id.cv_crop_image);
         mCropImageView.setOnBitmapSaveCompleteListener(this);
 
-        //获取需要的参数
-        mOutputX = 800; //裁剪保存的宽度
-        mOutputY = 800; //裁剪保存的高度
+        //裁剪保存的宽度
+        mOutputX = 800;
+        //裁剪保存的高度
+        mOutputY = 800;
         mIsSaveRectangle = false;
         String imagePath = getIntent().getStringExtra(IMAGE_PATH);
 
-        mCropImageView.setFocusStyle(CropImageView.Style.RECTANGLE); //裁剪框形状
-        mCropImageView.setFocusWidth(800); //方框的宽
-        mCropImageView.setFocusHeight(800);//方框的高
+        //裁剪框形状
+        mCropImageView.setFocusStyle(CropImageView.Style.RECTANGLE);
+        //方框的宽
+        mCropImageView.setFocusWidth(800);
+        //方框的高
+        mCropImageView.setFocusHeight(800);
 
         //缩放图片
         BitmapFactory.Options options = new BitmapFactory.Options();

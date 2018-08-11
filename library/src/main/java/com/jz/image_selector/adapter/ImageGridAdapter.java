@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -42,7 +43,7 @@ public class ImageGridAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showCamera = showCamera;
         mItemSize = ScreenUtils.getImageItemWidth(context);
-        mItemLayoutParams = new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, mItemSize);
+        mItemLayoutParams = new GridView.LayoutParams(mItemSize, mItemSize);
     }
 
     /**
@@ -186,10 +187,13 @@ public class ImageGridAdapter extends BaseAdapter {
         }
 
         /** Fixed View Size */
-        GridView.LayoutParams lp = (GridView.LayoutParams) view.getLayoutParams();
+       /* GridView.LayoutParams lp = (GridView.LayoutParams) view.getLayoutParams();
         if (lp.height != mItemSize) {
             view.setLayoutParams(mItemLayoutParams);
         }
+        view.setLayoutParams(new FrameLayout.LayoutParams(mItemSize, mItemSize));*/
+
+        view.setLayoutParams(new AbsListView.LayoutParams(mItemSize, mItemSize));
 
         return view;
     }
@@ -203,7 +207,6 @@ public class ImageGridAdapter extends BaseAdapter {
             image = (ImageView) view.findViewById(R.id.image);
             indicator = (ImageView) view.findViewById(R.id.checkmark);
             mask = view.findViewById(R.id.mask);
-            view.setLayoutParams(mItemLayoutParams);
             view.setTag(this);
         }
 
@@ -214,11 +217,11 @@ public class ImageGridAdapter extends BaseAdapter {
                 indicator.setVisibility(View.VISIBLE);
                 if (mSelectedImages.contains(data)) {
                     // 设置选中状态
-                    indicator.setImageResource(R.drawable.icon_photo_choice);
+                    indicator.setVisibility(View.VISIBLE);
                     mask.setVisibility(View.VISIBLE);
                 } else {
                     // 未选择
-                    indicator.setImageResource(android.R.color.transparent);
+                    indicator.setVisibility(View.GONE);
                     mask.setVisibility(View.GONE);
                 }
             } else {

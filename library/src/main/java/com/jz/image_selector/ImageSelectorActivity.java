@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +28,7 @@ import com.jz.image_selector.bean.Folder;
 import com.jz.image_selector.bean.Image;
 import com.jz.image_selector.utils.FileUtils;
 import com.jz.image_selector.utils.ImageDataSource;
+import com.jz.image_selector.utils.ScreenUtils;
 import com.jz.image_selector.view.FolderPopUpWindow;
 
 import java.io.File;
@@ -41,7 +41,7 @@ import java.util.List;
 public class ImageSelectorActivity extends FragmentActivity implements View.OnClickListener, ImageDataSource.OnImagesLoadedListener, AdapterView.OnItemClickListener {
 
     /**
-     * 选择结果，返回为 ArrayList&lt;String&gt; 图片路径集合
+     * 选择结果，返回为 ArrayList 图片路径集合
      */
     public static final String EXTRA_RESULT = "select_result";
     /**
@@ -272,6 +272,7 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
         mPreviewBtn.setOnClickListener(this);
 
         mGridView = (GridView) findViewById(R.id.grid);
+        mGridView.setNumColumns(ScreenUtils.getColumn(this));
         mGridView.setAdapter(mImageAdapter);
         mGridView.setOnItemClickListener(this);
 
@@ -366,8 +367,6 @@ public class ImageSelectorActivity extends FragmentActivity implements View.OnCl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("requestCode", requestCode + "");
-        Log.i("resultCode", resultCode + "");
         // 相机拍照完成后，返回图片路径
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == RESULT_OK) {

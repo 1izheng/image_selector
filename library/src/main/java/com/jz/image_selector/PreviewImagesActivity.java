@@ -2,29 +2,34 @@ package com.jz.image_selector;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.jz.image_selector.view.ViewPagerFixed;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import uk.co.senab.photoview.PhotoView;
+
 /**
  * 图片预览
+ * @author lizheng 
+ * created at 2018/7/25 下午3:22
  */
-public class PreviewImagesActivity extends Activity {
-    ViewPager pager;
+
+public class PreviewImagesActivity extends AppCompatActivity {
+    ViewPagerFixed pager;
     MyPagerAdapter adapter;
     private ArrayList<String> picList = new ArrayList<>();
     private TextView tvCancel, tvSend;
-
 
     public static void preViewSingle(Activity activity, String url, int requestCode) {
         Intent intent = new Intent(activity, PreviewImagesActivity.class);
@@ -38,18 +43,16 @@ public class PreviewImagesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_pictures);
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPagerFixed) findViewById(R.id.pager);
         tvCancel = (TextView) findViewById(R.id.tv_cancel);
         tvSend = (TextView) findViewById(R.id.tv_send);
 
 
         picList = getIntent().getStringArrayListExtra("pics");
-        if (picList!= null && picList.size() != 0) {
+        if (picList != null && picList.size() != 0) {
             adapter = new MyPagerAdapter();
             pager.setAdapter(adapter);
         }
-
-        Log.i("PreView", picList.toString());
 
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,22 +86,19 @@ public class PreviewImagesActivity extends Activity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = View.inflate(PreviewImagesActivity.this, R.layout.preview_item_image, null);
-            ImageView imageView = (ImageView) view.findViewById(R.id.iv_pic);
+            PhotoView photoView = new PhotoView(PreviewImagesActivity.this);
+            Glide.with(PreviewImagesActivity.this)
+                    .load(Uri.fromFile(new File(picList.get(position))))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(photoView);
 
-            Glide.with(PreviewImagesActivity.this).load(new File(picList.get(position)))
-//                    .placeholder(R.drawable.default_error)
-                    .override(800, 1500)
-                            //.error(R.drawable.default_error)
-                    .into(imageView);
-            container.addView(view, 0);
-            return view;
+            container.addView(photoView);
+            return photoView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
-            System.gc();
         }
     }
 
